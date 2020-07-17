@@ -1,79 +1,121 @@
-<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
+# Paradox: Todo List API
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
 
-## About Laravel
+## Installation
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+It's assumed you have installed all requirements the Laravel 7v requires:
+https://laravel.com/docs/7.x#server-requirements
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Optial and tested OS: Ubuntu 20.04
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- `git clone git@github.com:alkhachatryan/paradox_test.git`
+- `cd paradox_test`
+- `composer install`
 
-## Learning Laravel
+After installation, create (copy) the .env file, and do your configuration, such as key generation and DB conenction
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- `mv .env.example .env`
+- `php artisan key:generate
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+After database configurations run:
+- `php artisan migrate`
+- `php artisan passport:install`
 
-## Laravel Sponsors
+## Usage
+There are two resources: users and todos.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+### Users API endpoints:
+##### User Register Request
+Endpoint: /api/user/register
+Method: POST
+Params:
+- Name - required, min:2, max:32
+- Email - required, email, unique in users table
+- Password - required, min:6, max:32, equals password_confirmation
+- Password_confirmation - the same as Password
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
-- [Abdel Elrafa](https://abdelelrafa.com)
-- [Hyper Host](https://hyper.host)
-- [Appoly](https://www.appoly.co.uk)
-- [OP.GG](https://op.gg)
-- [云软科技](http://www.yunruan.ltd/)
+##### User Register Response
+Type: JSON
+Data: 
+- User access token
+- User model
 
-## Contributing
+##### User Login Request
+Endpoint: /api/user/login
+Method: POST
+Params:
+- Email - required, email, unique in users table
+- Password - required, min:6, max:32, equals password_confirmation
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+##### User Login Response
+Type: JSON
+Data: 
+- User access token
 
-## Code of Conduct
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+##### User Account Request
+Endpoint: /api/user
+Method: GET
 
-## Security Vulnerabilities
+##### User Account Response
+Type: JSON
+Data: 
+- User model
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+##### User Logout Request
+Endpoint: /api/user/logout
+Method: POST
 
-## License
+##### User Logout Response
+Type: JSON
+Data: 
+- string
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Todos API endpoints:
+##### Todos List Request
+Endpoint: /api/todos
+Method: GET
+Params:
+- Filter - NOT REQUIRED, should equals finished or not_finished
+
+##### Todos List Response
+Type: JSON
+Data: 
+- Todos models
+
+
+##### Todos Create Request
+Endpoint: /api/todos/create
+Method: POST
+Params:
+- Title - string, max 191
+- Done - NOT REQUIRED, should equals 1 or 0
+
+##### Todos Create Response
+Type: JSON
+Data: 
+- Todos model
+
+##### Todos Update Request
+Endpoint: /api/todos/edit/{ID}
+Method: POST
+Params:
+- Title - NOT REQUIRED, max 191
+- Done - NOT REQUIRED, should equals 1 or 0
+- _method - required, should equals PATCH
+
+##### Todos Update Response
+Type: JSON
+Data: 
+- Todos model
+
+##### Todos Delete Request
+Endpoint: /api/todos/edit/{ID}
+Method: POST
+Params:
+- _method - required, should equals DELETE
+
+##### Todos Delete Response
+Type: JSON
+Data: 
+- string
