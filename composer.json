@@ -63,6 +63,7 @@
         ],
         "post-install-cmd": [
             "php artisan clear-compiled",
+            "touch .env",
             "php artisan key:generate",
             "php artisan route:clear",
             "php artisan config:clear",
